@@ -10,6 +10,7 @@ public class CharacterControllerScript : MonoBehaviour {
     public Transform groundCheck;
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
+    public float jumpForce = 700f;
 
     Animator anim;
 
@@ -26,6 +27,8 @@ public class CharacterControllerScript : MonoBehaviour {
     {
         isOnGround = Physics2D.OverlapCircle(groundCheck.position,groundRadius,whatIsGround);
         anim.SetBool("Ground", isOnGround);
+        anim.SetFloat("vSpeed", GetComponent<Rigidbody2D>().velocity.y);
+
 
         float move = Input.GetAxis("Horizontal");
 
@@ -42,6 +45,15 @@ public class CharacterControllerScript : MonoBehaviour {
             Flip();
         }
 	}
+
+    private void Update()
+    {
+        if(isOnGround&& Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetBool("Ground", false);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
+        }
+    }
 
     void Flip()
     {
