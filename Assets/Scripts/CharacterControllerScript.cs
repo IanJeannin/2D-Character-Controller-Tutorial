@@ -6,8 +6,14 @@ public class CharacterControllerScript : MonoBehaviour {
 
     public float maxSpeed = 10;
     private bool facingRight = true;
+    private bool isOnGround;
+    public Transform groundCheck;
+    float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
 
     Animator anim;
+
+
 
 	// Use this for initialization
 	void Start ()
@@ -18,6 +24,9 @@ public class CharacterControllerScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
+        isOnGround = Physics2D.OverlapCircle(groundCheck.position,groundRadius,whatIsGround);
+        anim.SetBool("Ground", isOnGround);
+
         float move = Input.GetAxis("Horizontal");
 
         anim.SetFloat("Speed", Mathf.Abs(move));
